@@ -8,7 +8,9 @@ namespace Utilities.StateMachine
         private IState<T> currentState;
         private readonly T owner;
         private Dictionary<Enum, IState<T>> states = new();
+        private Enum currentStateKey;
         
+        public Enum CurrentStateKey => currentStateKey;
         public IState<T> CurrentState => currentState;
         
         public GenericStateMachine(T owner)
@@ -29,6 +31,7 @@ namespace Utilities.StateMachine
 
                 currentState?.OnExit();
                 currentState = newState;
+                currentStateKey = key;
                 currentState?.OnEnter();
             }
         }
