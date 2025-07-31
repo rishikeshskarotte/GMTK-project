@@ -9,7 +9,9 @@ namespace Player
         public bool IsGrounded;
         public float moveInput;
         public PlayerSO PlayerData => playerData;
-        
+        public bool actionTriggered = false;
+        public float RevivalButtonHoldTime = 0f;
+        public bool JumpPressed = false;
         public PlayerModel(PlayerSO playerSo)
         {
            this.playerData = playerSo;

@@ -9,9 +9,12 @@ namespace Player
     public class PlayerSO : ScriptableObject
     {
         [SerializeField] private List<PlayerStateData> playerStateData = new();
+        [SerializeField] private float revivalTime;
+            
         private Dictionary<PlayerState, PlayerStateData> stateDataDict;
-
+        
         public Dictionary<PlayerState, PlayerStateData> StateDataDict => stateDataDict;
+        public float RevivalTime => revivalTime;
         
         private void OnEnable()
         {

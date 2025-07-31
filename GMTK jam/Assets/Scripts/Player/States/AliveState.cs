@@ -7,12 +7,12 @@ namespace Player.States
     public class AliveState : IState<PlayerController>
     {
         public PlayerController Owner { get; set; }
-
-        private bool jumpPressed;
-
+        
         public void OnEnter()
         {
             Owner.PlayerView.SpriteRenderer.color = Color.green;
+            Owner.PlayerModel.RevivalButtonHoldTime = 0f;
+            Owner.PlayerModel.actionTriggered = false;
         }
 
         public void OnExit() {}
@@ -27,7 +27,7 @@ namespace Player.States
         private void GetInput()
         {
             Owner.PlayerModel.moveInput = 0;
-            jumpPressed = false;
+            Owner.PlayerModel.JumpPressed = false;
 
             if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed)
                 Owner.PlayerModel.moveInput -= 1f;
@@ -36,7 +36,23 @@ namespace Player.States
                 Owner.PlayerModel.moveInput += 1f;
 
             if (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.upArrowKey.wasPressedThisFrame)
-                jumpPressed = true;
+                Owner.PlayerModel.JumpPressed = true;
+            
+            if (Keyboard.current.gKey.isPressed)
+            {
+                Owner.PlayerModel.RevivalButtonHoldTime += Time.deltaTime;
+
+                if (!Owner.PlayerModel.actionTriggered && Owner.PlayerModel.RevivalButtonHoldTime >= Owner.PlayerModel.PlayerData.RevivalTime)
+                {
+                    TriggerGAction();  
+                    Owner.PlayerModel.actionTriggered = true;
+                }
+            }
+            else
+            {
+                Owner.PlayerModel.RevivalButtonHoldTime = 0f;
+                Owner.PlayerModel.actionTriggered = false;
+            }
         }
 
         private void Move()
@@ -50,13 +66,18 @@ namespace Player.States
 
         private void Jump()
         {
-            if (jumpPressed && Owner.PlayerModel.IsGrounded)
+            if (Owner.PlayerModel.JumpPressed && Owner.PlayerModel.IsGrounded)
             {
                 Owner.PlayerView.PlayerRB.linearVelocity = new Vector2(
                     Owner.PlayerView.PlayerRB.linearVelocity.x,
                     Owner.PlayerModel.PlayerData.StateDataDict[PlayerState.AliveState].JumpForce
                 );
             }
+        }
+
+        private void TriggerGAction()
+        {
+            Debug.Log("G key held for 3 seconds. Action triggered!");
         }
     }
 }
