@@ -1,3 +1,4 @@
+using UnityEngine;
 using Utilities.StateMachine;
 
 namespace Player.States
@@ -7,17 +8,15 @@ namespace Player.States
         public PlayerController Owner { get; set; }
         public void OnEnter()
         {
-            throw new System.NotImplementedException();
+            Owner.PlayerView.SpriteRenderer.color = Color.white;
         }
 
         public void OnExit()
         {
-            throw new System.NotImplementedException();
         }
 
         public void Tick()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

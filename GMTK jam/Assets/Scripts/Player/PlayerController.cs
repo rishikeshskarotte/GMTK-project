@@ -1,3 +1,4 @@
+using Main;
 using Player.StateMachine;
 using Player.States;
 using UnityEngine;
@@ -17,8 +18,24 @@ namespace Player
         public PlayerController(PlayerView playerPrefab, PlayerSO playerData, Transform parentTransform)
         {
             this.playerView = Object.Instantiate(playerPrefab, parentTransform);
+            playerView.SetController(this);
             playerModel = new PlayerModel(playerData);
             CreateStateMachine();
+            SubscribeToEvents();
+        }
+
+        private void SubscribeToEvents()
+        {
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+        }
+
+        public void OnPlayerDied()
+        {
+            playerStateMachine.ChangeState(PlayerState.SkeletonState);
+            GameManager.Instance.EventService.OnPlayerDiedd.InvokeEvent(this);
         }
 
         private void CreateStateMachine()
