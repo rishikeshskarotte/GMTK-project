@@ -1,6 +1,8 @@
+using UnityEngine;
+
 namespace Player
 {
-    public class PlayerView
+    public class PlayerView : MonoBehaviour
     {
         
     }
