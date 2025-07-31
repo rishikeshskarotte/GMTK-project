@@ -2,7 +2,7 @@ using Utilities;
 
 namespace Main
 {
-    public class GameService : GenericMonoSingelton<GameService>
+    public class GameManager : GenericMonoSingelton<GameManager>
     {
         protected override void Awake()
         {
