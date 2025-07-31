@@ -14,9 +14,9 @@ namespace Player
         public PlayerModel PlayerModel => playerModel;
         public PlayerStateMachine PlayerStateMachine => playerStateMachine;
         
-        public PlayerController(PlayerView playerPrefab, PlayerSO playerData)
+        public PlayerController(PlayerView playerPrefab, PlayerSO playerData, Transform parentTransform)
         {
-            this.playerView = Object.Instantiate(playerPrefab);
+            this.playerView = Object.Instantiate(playerPrefab, parentTransform);
             playerModel = new PlayerModel(playerData);
             CreateStateMachine();
         }

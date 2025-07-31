@@ -10,16 +10,18 @@ namespace Player
         private PlayerController playerController;
         private PlayerView playerPrefab;
         private PlayerSO playerData;
+        private Transform parentTransform;
         
-        public PlayerPool(PlayerView playerPrefab, PlayerSO playerData)
+        public PlayerPool(PlayerView playerPrefab, PlayerSO playerData, Transform transform)
         {
             this.playerPrefab = playerPrefab;
             this.playerData = playerData;
+            this.parentTransform = transform;
         }
         
         protected override PlayerController CreateItem()
         {
-            return playerController = new PlayerController(playerPrefab, playerData);
+            return playerController = new PlayerController(playerPrefab, playerData, parentTransform);
         }
 
         protected override void OnGet(PlayerController player)

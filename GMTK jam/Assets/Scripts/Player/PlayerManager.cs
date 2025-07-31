@@ -16,7 +16,7 @@ namespace Player
         
         private void Awake()
         {
-            playerPool = new PlayerPool(playerPrefab, playerData);
+            playerPool = new PlayerPool(playerPrefab, playerData, this.transform);
             SpawnPlayer();
         }
 
