@@ -5,11 +5,13 @@ namespace Events
 {
     public class EventService
     {
-        public EventController<PlayerController> OnPlayerDiedd;
+        public EventController<PlayerController> OnPlayerDied;
+        public EventController OnSkeltonRevived;
         
         public EventService()
         {
-            OnPlayerDiedd =  new EventController<PlayerController>();
+            OnPlayerDied =  new EventController<PlayerController>();
+            OnSkeltonRevived =  new EventController();
         }
 
     }

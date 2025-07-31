@@ -6,6 +6,7 @@ namespace Utilities.StateMachine
         public void OnEnter();
         public void OnExit();
         public void Tick();
+        public void FixedTick();
        
     }
 }

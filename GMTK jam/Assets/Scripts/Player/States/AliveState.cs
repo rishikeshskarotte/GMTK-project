@@ -1,3 +1,4 @@
+using Main;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Utilities.StateMachine;
@@ -24,18 +25,23 @@ namespace Player.States
             Jump();
         }
 
+        public void FixedTick()
+        {
+            
+        }
+
         private void GetInput()
         {
             Owner.PlayerModel.moveInput = 0;
             Owner.PlayerModel.JumpPressed = false;
 
-            if (Keyboard.current.leftArrowKey.isPressed || Keyboard.current.aKey.isPressed)
+            if (Keyboard.current.leftArrowKey.isPressed)
                 Owner.PlayerModel.moveInput -= 1f;
 
-            if (Keyboard.current.rightArrowKey.isPressed || Keyboard.current.dKey.isPressed)
+            if (Keyboard.current.rightArrowKey.isPressed )
                 Owner.PlayerModel.moveInput += 1f;
 
-            if (Keyboard.current.spaceKey.wasPressedThisFrame || Keyboard.current.upArrowKey.wasPressedThisFrame)
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
                 Owner.PlayerModel.JumpPressed = true;
             
             if (Keyboard.current.gKey.isPressed)
@@ -44,7 +50,7 @@ namespace Player.States
 
                 if (!Owner.PlayerModel.actionTriggered && Owner.PlayerModel.RevivalButtonHoldTime >= Owner.PlayerModel.PlayerData.RevivalTime)
                 {
-                    TriggerGAction();  
+                    ReviveToGhost();  
                     Owner.PlayerModel.actionTriggered = true;
                 }
             }
@@ -75,9 +81,9 @@ namespace Player.States
             }
         }
 
-        private void TriggerGAction()
+        private void ReviveToGhost()
         {
-            Debug.Log("G key held for 3 seconds. Action triggered!");
+           GameManager.Instance.EventService.OnSkeltonRevived.InvokeEvent();
         }
     }
 }

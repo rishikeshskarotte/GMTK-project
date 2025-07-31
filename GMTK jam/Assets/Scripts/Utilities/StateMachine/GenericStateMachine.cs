@@ -48,5 +48,10 @@ namespace Utilities.StateMachine
         {
             currentState?.Tick();
         }
+
+        public void FixedTick()
+        {
+            currentState?.FixedTick();
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace Player
         public void OnPlayerDied()
         {
             playerStateMachine.ChangeState(PlayerState.SkeletonState);
-            GameManager.Instance.EventService.OnPlayerDiedd.InvokeEvent(this);
+            GameManager.Instance.EventService.OnPlayerDied.InvokeEvent(this);
         }
 
         private void CreateStateMachine()
