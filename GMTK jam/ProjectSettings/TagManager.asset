@@ -52,5 +52,8 @@ TagManager:
   - name: Player
     uniqueID: 1162766929
     locked: 0
+  - name: Ghost
+    uniqueID: 1760216471
+    locked: 0
   m_RenderingLayers:
   - Default

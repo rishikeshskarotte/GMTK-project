@@ -11,27 +11,30 @@ namespace Player
         private PlayerView playerPrefab;
         private PlayerSO playerData;
         private Transform parentTransform;
+        private GhostPool ghostPool;
         
-        public PlayerPool(PlayerView playerPrefab, PlayerSO playerData, Transform transform)
+        public PlayerPool(PlayerView playerPrefab, PlayerSO playerData, Transform transform, GhostPool ghostPool = null)
         {
             this.playerPrefab = playerPrefab;
             this.playerData = playerData;
             this.parentTransform = transform;
+            this.ghostPool = ghostPool;
         }
         
         protected override PlayerController CreateItem()
         {
-            return playerController = new PlayerController(playerPrefab, playerData, parentTransform);
+            return playerController = new PlayerController(playerPrefab, playerData, parentTransform, ghostPool);
         }
 
         protected override void OnGet(PlayerController player)
         {
-            player.EnablePlayer(true);
+            player.PlayerView.gameObject.SetActive(true);
         }
 
         protected override void OnRelease(PlayerController player)
         {
-            player.EnablePlayer(false);
+            player.PlayerView.gameObject.SetActive(false);
+
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Player.StateMachine
         {
           AddState(PlayerState.AliveState, new AliveState());
           AddState(PlayerState.SkeletonState, new SkeletonState());
-          AddState(PlayerState.GhostState, new GhostState());
         }
     }
 }

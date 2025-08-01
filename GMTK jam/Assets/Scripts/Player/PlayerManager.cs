@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Main;
+using Player.Ghost;
 using Player.States;
 using UnityEngine;
 
@@ -11,14 +12,20 @@ namespace Player
         [SerializeField] private Transform level1Checkpoint;
         [SerializeField] private PlayerView playerPrefab;
         [SerializeField] private PlayerSO playerData;
-
+        [SerializeField] private Transform ghostParent;
+        [SerializeField] private GhostView ghostPrefab;
+        [SerializeField] private GhostSO ghostData;
+        
         private PlayerPool playerPool;
+        private GhostPool ghostPool;
+        
         private Dictionary<PlayerState, Queue<PlayerController>> spawnedPlayers = new();
 
         private void Start()
         {
             SubscribeToEvents();
-            playerPool = new PlayerPool(playerPrefab, playerData, this.transform);
+            ghostPool = new GhostPool(ghostPrefab, ghostParent, ghostData);
+            playerPool = new PlayerPool(playerPrefab, playerData, this.transform, ghostPool);
             SpawnPlayer();
         }
 
@@ -52,16 +59,19 @@ namespace Player
 
         private void OnSkeletonRevived()
         {
-            if (!spawnedPlayers.TryGetValue(PlayerState.SkeletonState, out var skeletonQueue) || skeletonQueue.Count == 0)
-                return;
-
-            PlayerController skeletonPlayer = skeletonQueue.Dequeue();
-            skeletonPlayer.PlayerStateMachine.ChangeState(PlayerState.GhostState);
-
-            if (!spawnedPlayers.ContainsKey(PlayerState.GhostState))
-                spawnedPlayers[PlayerState.GhostState] = new Queue<PlayerController>();
-
-            spawnedPlayers[PlayerState.GhostState].Enqueue(skeletonPlayer);
+            PlayerController alivePlayer;
+            
+            if (spawnedPlayers.TryGetValue(PlayerState.AliveState, out var aliveQueue) && aliveQueue.Count > 0)
+            {
+                alivePlayer = aliveQueue.Peek();
+                
+                if (spawnedPlayers.TryGetValue(PlayerState.SkeletonState, out var skeletonQueue) && aliveQueue.Count > 0)
+                {
+                    PlayerController skeletonPlayer = skeletonQueue.Peek();
+                    alivePlayer.CreateGhost(ghostPool, skeletonPlayer);
+                }
+                
+            }
         }
 
         private void OnPlayerDied(PlayerController playerController)
