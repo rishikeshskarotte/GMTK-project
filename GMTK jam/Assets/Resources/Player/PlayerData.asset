@@ -23,6 +23,6 @@ MonoBehaviour:
     JumpForce: 0
   - PlayerState: 2
     PlayerSprite: {fileID: 0}
-    Speed: 0
-    JumpForce: 0
+    Speed: 5
+    JumpForce: 5
   revivalTime: 0
