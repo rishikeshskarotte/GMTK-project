@@ -26,12 +26,13 @@ namespace Player
 
         protected override void OnGet(PlayerController player)
         {
-            player.EnablePlayer(true);
+            player.PlayerView.gameObject.SetActive(true);
         }
 
         protected override void OnRelease(PlayerController player)
         {
-            player.EnablePlayer(false);
+            player.PlayerView.gameObject.SetActive(false);
+
         }
     }
 }
