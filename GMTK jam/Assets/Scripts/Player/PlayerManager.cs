@@ -11,22 +11,22 @@ namespace Player
         [SerializeField] private Transform level1Checkpoint;
         [SerializeField] private PlayerView playerPrefab;
         [SerializeField] private PlayerSO playerData;
-        
+
         private PlayerPool playerPool;
-        private Dictionary<PlayerState, List<PlayerController>> spawnedPlayers = new();
-        
+        private Dictionary<PlayerState, Queue<PlayerController>> spawnedPlayers = new();
+
         private void Start()
         {
             SubscribeToEvents();
             playerPool = new PlayerPool(playerPrefab, playerData, this.transform);
             SpawnPlayer();
         }
-        
+
         private void Update()
         {
-            foreach (var playerList in new List<List<PlayerController>>(spawnedPlayers.Values))
+            foreach (var playerQueue in new List<Queue<PlayerController>>(spawnedPlayers.Values))
             {
-                foreach (var player in new List<PlayerController>(playerList))
+                foreach (var player in playerQueue)
                 {
                     player.PlayerStateMachine.Tick();
                 }
@@ -35,9 +35,9 @@ namespace Player
 
         private void FixedUpdate()
         {
-            foreach (var playerList in new List<List<PlayerController>>(spawnedPlayers.Values))
+            foreach (var playerQueue in new List<Queue<PlayerController>>(spawnedPlayers.Values))
             {
-                foreach (var player in new List<PlayerController>(playerList))
+                foreach (var player in playerQueue)
                 {
                     player.PlayerStateMachine.FixedTick();
                 }
@@ -46,55 +46,46 @@ namespace Player
 
         private void SubscribeToEvents()
         {
-            GameManager.Instance.EventService.OnPlayerDied.AddListener(OnplayerDied);
-            GameManager.Instance.EventService.OnSkeltonRevived.AddListener(OnSkeltonRevived);
+            GameManager.Instance.EventService.OnPlayerDied.AddListener(OnPlayerDied);
+            GameManager.Instance.EventService.OnSkeltonRevived.AddListener(OnSkeletonRevived);
         }
 
-        private void OnSkeltonRevived()
+        private void OnSkeletonRevived()
         {
-           if(!spawnedPlayers.ContainsKey(PlayerState.SkeletonState)) return;
+            if (!spawnedPlayers.TryGetValue(PlayerState.SkeletonState, out var skeletonQueue) || skeletonQueue.Count == 0)
+                return;
 
-           if (spawnedPlayers.TryGetValue(PlayerState.SkeletonState, out var skeletonPlayers) 
-               && skeletonPlayers.Count > 0)
-           {
-              skeletonPlayers[0].PlayerStateMachine.ChangeState(PlayerState.GhostState);
-              
-              if (!spawnedPlayers.ContainsKey(PlayerState.GhostState))
-              {
-                  spawnedPlayers[PlayerState.GhostState] = new ();
-              }
-              spawnedPlayers[PlayerState.GhostState].Add( skeletonPlayers[0]);
-              
-           }
+            PlayerController skeletonPlayer = skeletonQueue.Dequeue();
+            skeletonPlayer.PlayerStateMachine.ChangeState(PlayerState.GhostState);
+
+            if (!spawnedPlayers.ContainsKey(PlayerState.GhostState))
+                spawnedPlayers[PlayerState.GhostState] = new Queue<PlayerController>();
+
+            spawnedPlayers[PlayerState.GhostState].Enqueue(skeletonPlayer);
         }
 
-        private void OnplayerDied(PlayerController playerController)
+        private void OnPlayerDied(PlayerController playerController)
         {
             if (spawnedPlayers.ContainsKey(PlayerState.AliveState))
             {
-                spawnedPlayers[PlayerState.AliveState].Remove(playerController);
+                spawnedPlayers[PlayerState.AliveState].Clear(); 
             }
-            
             if (!spawnedPlayers.ContainsKey(PlayerState.SkeletonState))
-            {
-                spawnedPlayers[PlayerState.SkeletonState] = new();
-            }
+                spawnedPlayers[PlayerState.SkeletonState] = new Queue<PlayerController>();
 
-            spawnedPlayers[PlayerState.SkeletonState].Add(playerController);
-            
+            spawnedPlayers[PlayerState.SkeletonState].Enqueue(playerController);
+
             SpawnPlayer();
         }
 
         private void SpawnPlayer()
         {
             PlayerController player = playerPool.GetItem();
-            
-            if (!spawnedPlayers.ContainsKey(PlayerState.AliveState))
-            {
-                spawnedPlayers[PlayerState.AliveState] = new ();
-            }
 
-            spawnedPlayers[PlayerState.AliveState].Add(player);
+            if (!spawnedPlayers.ContainsKey(PlayerState.AliveState))
+                spawnedPlayers[PlayerState.AliveState] = new Queue<PlayerController>();
+
+            spawnedPlayers[PlayerState.AliveState].Enqueue(player);
             player.SetPlayer(level1Checkpoint);
         }
     }
