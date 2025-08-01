@@ -11,7 +11,11 @@ namespace Player
         public Vector2 InputVector;
         
         public PlayerSO PlayerData => playerData;
-        public bool actionTriggered = false;
+        public bool SwitchPlaceActionTriggered = false;
+
+        public float SwitchPlaceButtonHoldTimer = 0f;
+
+        public bool RevivalActionTriggered = false;
         public float RevivalButtonHoldTime = 0f;
         public bool JumpPressed = false;
         

@@ -25,7 +25,7 @@ namespace Player
         
         protected override void OnGet(GhostController ghost)
         {
-         ghost.GhostView.gameObject.SetActive(true);
+            ghost.GhostView.gameObject.SetActive(true);
         }
 
         protected override void OnRelease(GhostController ghost)

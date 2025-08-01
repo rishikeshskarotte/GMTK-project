@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000c31030473b7c5d27516a4e45
+  m_ApplyToSortingLayers: 00000000c31030473b7c5d27516a4e4597c5ea68
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1938,14 +1938,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 858882309}
     m_Modifications:
-    - target: {fileID: 7142239549442539000, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7142239549442539000, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.81
-      objectReference: {fileID: 0}
     - target: {fileID: 7670560811846531504, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
       propertyPath: m_Name
       value: PlayerManager
@@ -1991,16 +1983,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8956203825342336173, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
-      propertyPath: playerPrefab
-      value: 
-      objectReference: {fileID: 2472409273126294912, guid: 61f4d4be27b891a4f8f311c7f586197d, type: 3}
-    - target: {fileID: 8956203825342336173, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
       propertyPath: level1Checkpoint
       value: 
       objectReference: {fileID: 795073778}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 3419535188274981974, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24cd17c9439239842acfd66e6b1392e3, type: 3}

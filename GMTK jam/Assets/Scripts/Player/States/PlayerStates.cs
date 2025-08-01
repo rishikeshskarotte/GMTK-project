@@ -4,6 +4,5 @@ namespace Player.States
     {
         AliveState,
         SkeletonState,
-        GhostState,
     }
 }

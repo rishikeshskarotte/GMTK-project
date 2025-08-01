@@ -1,5 +1,6 @@
 using System;
 using Main;
+using Player.Ghost;
 using Player.States;
 using UnityEngine;
 
@@ -28,7 +29,13 @@ namespace Player
             if (other.gameObject.CompareTag("Spike"))
             {
                 if (playerController.PlayerStateMachine.CurrentState is AliveState)
+                {
+                    if (playerController.GhostController != null)
+                    {
+                        GameManager.Instance.EventService.OnGhostDestroyed.InvokeEvent(playerController.GhostController);
+                    }
                     playerController.OnPlayerDied();
+                }
             }
         }
 
