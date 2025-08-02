@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Spike
   - GroundLayer
+  - background
   layers:
   - Default
   - TransparentFX
@@ -43,11 +44,20 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1859727169
+    locked: 0
   - name: Spike
     uniqueID: 660438075
     locked: 0
+  - name: Button
+    uniqueID: 2039712083
+    locked: 0
   - name: Ground
     uniqueID: 1194332355
+    locked: 0
+  - name: Portals
+    uniqueID: 3282711591
     locked: 0
   - name: Player
     uniqueID: 1162766929
